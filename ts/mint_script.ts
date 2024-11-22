@@ -1,6 +1,15 @@
 import { Address, createPublicClient, Hex, http } from "viem";
 import "dotenv/config";
-import { createMintOrder, getRfq, signOrder, submitOrder } from "./mint_utils";
+import {
+  createMintOrder,
+  getRfq,
+  signOrder,
+  submitOrder,
+  bigIntAmount,
+  UINT256_MAX,
+  getAllowance,
+  approve,
+} from "./mint_utils";
 import { USTB_MINTING_ABI } from "./minting_abi";
 import { mainnet } from "viem/chains";
 import { parseScientificOrNonScientificToBigInt } from "./parse_number";
@@ -8,13 +17,14 @@ import { MINT_ADDRESS } from "./constants";
 import { Side } from "./types";
 
 // Configuration
-const AMOUNT: number = 35; // Amount in USD
+const AMOUNT: number = 25; // Amount in USD
 const COLLATERAL_ASSET: "BUIDL" | "USDC" = "USDC";
 const BENEFACTOR: Address =
-  "0x3Aa3Fd1B762CaC519D405297CE630beD30430b00" as Address; // Replace with your address
+  "0x71aD9532857fD983A5b42282104393c4504aC26f" as Address; // Replace with your address
 const SIDE: "MINT" | "REDEEM" = "MINT";
 
 const PRIVATE_KEY: Hex = process.env.PRIVATE_KEY as Hex;
+const ALLOW_INFINITE_APPROVALS = false;
 
 // Asset addresses
 const USDC_ADDRESS: Address = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
@@ -41,6 +51,21 @@ async function main() {
     );
 
     console.log("Order", order);
+
+    // Get allowance
+    const allowance = await getAllowance(collateralAddress, PRIVATE_KEY);
+    console.log("Allowance", allowance);
+
+    // Determine if approval required
+    if (allowance < bigIntAmount(AMOUNT)) {
+      // Approving
+      const txHash = await approve(
+        collateralAddress,
+        PRIVATE_KEY,
+        ALLOW_INFINITE_APPROVALS ? UINT256_MAX : bigIntAmount(AMOUNT)
+      );
+      console.log(`Approval submitted: https://etherscan.io/tx/${txHash}`);
+    }
 
     const orderSigning = {
       ...order,

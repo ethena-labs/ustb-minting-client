@@ -30,8 +30,6 @@ $ source venv/bin/activate
 (venv) $ pip install -r requirements.txt
 ```
 
-4. Approve tokens to be spent by the minting contract.  The spender is the minting contract address: `0x4a6B08f7d49a507778Af6FB7eebaE4ce108C981E`.
-
 ## Run mint
 
 ```

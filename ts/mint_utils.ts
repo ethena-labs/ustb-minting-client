@@ -5,6 +5,7 @@ import {
   createWalletClient,
   Hex,
   http,
+  erc20Abi,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { mainnet } from "viem/chains";
@@ -98,6 +99,60 @@ export async function signOrder(
     signature_bytes: signature,
   };
 }
+
+export async function getAllowance(
+  collateralAddress: `0x${string}`,
+  privateKey: string
+) {
+  const publicClient = createPublicClient({
+    chain: mainnet,
+    transport: http(process.env.RPC_URL as string),
+  });
+  const { address } = privateKeyToAccount(privateKey as Hex);
+
+  const allowance = await publicClient.readContract({
+    address: collateralAddress,
+    abi: erc20Abi,
+    functionName: "allowance",
+    args: [address, MINT_ADDRESS],
+  });
+  return allowance;
+}
+
+export async function approve(
+  collateralAddress: `0x${string}`,
+  privateKey: string,
+  amount: bigint
+) {
+  const account = privateKeyToAccount(privateKey as `0x${string}`);
+
+  const publicClient = createPublicClient({
+    chain: mainnet,
+    transport: http(process.env.RPC_URL as string),
+  });
+  const walletClient = createWalletClient({
+    chain: mainnet,
+    transport: http(process.env.RPC_URL as string),
+  });
+
+  const { request } = await publicClient.simulateContract({
+    account,
+    address: collateralAddress,
+    abi: erc20Abi,
+    functionName: "approve",
+    args: [MINT_ADDRESS, amount],
+  });
+
+  const txHash = await walletClient.writeContract(request);
+
+  return txHash;
+}
+
+export function bigIntAmount(amount: number) {
+  return BigInt(amount) * BigInt(10 ** 6);
+}
+
+export const UINT256_MAX = BigInt(2) ** BigInt(256) - BigInt(1);
 
 export async function submitOrder(order: OrderSending, signature: Signature) {
   const response = await fetch(

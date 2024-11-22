@@ -18,9 +18,7 @@ cp .env.example .env
 
 4. Set configuration in `mint_script.ts` - Specify the amount, collateral asset, benefactor, and side.
 
-5. Approve tokens to be spent by the minting contract.  The spender is the minting contract address: `0x4a6B08f7d49a507778Af6FB7eebaE4ce108C981E`.
-
-6. Run the script:
+5. Run the script:
 
 ```bash
 pnpm mint
