@@ -268,13 +268,13 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "enum IUStbDefinitions.TransferState",
+        "internalType": "enum IUSDtbDefinitions.TransferState",
         "name": "prevState",
         "type": "uint8"
       },
       {
         "indexed": false,
-        "internalType": "enum IUStbDefinitions.TransferState",
+        "internalType": "enum IUSDtbDefinitions.TransferState",
         "name": "state",
         "type": "uint8"
       }
@@ -676,7 +676,7 @@
     "name": "transferState",
     "outputs": [
       {
-        "internalType": "enum IUStbDefinitions.TransferState",
+        "internalType": "enum IUSDtbDefinitions.TransferState",
         "name": "",
         "type": "uint8"
       }
@@ -687,7 +687,7 @@
   {
     "inputs": [
       {
-        "internalType": "enum IUStbDefinitions.TransferState",
+        "internalType": "enum IUSDtbDefinitions.TransferState",
         "name": "code",
         "type": "uint8"
       }

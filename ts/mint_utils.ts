@@ -9,7 +9,7 @@ import {
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { mainnet } from "viem/chains";
-import { USTB_MINTING_ABI } from "./minting_abi";
+import { USDTB_MINTING_ABI } from "./minting_abi";
 import {
   OrderSending,
   OrderSigning,
@@ -20,7 +20,7 @@ import {
 } from "./types";
 import {
   DOMAIN,
-  USTB_URL,
+  USDTB_URL,
   RPC_URL,
   MINT_ADDRESS,
   ORDER_TYPE,
@@ -33,7 +33,7 @@ export async function getRfq(
   size: number
 ) {
   const response = await fetch(
-    `${USTB_URL}rfq?pair=${pair}&type_=${type}&side=${side}&size=${size}`
+    `${USDTB_URL}rfq?pair=${pair}&type_=${type}&side=${side}&size=${size}`
   );
   return (await response.json()) as Rfq;
 }
@@ -55,7 +55,7 @@ export async function createMintOrder(
     beneficiary,
     collateral_asset: collateralAsset,
     collateral_amount: rfqData.collateral_amount,
-    ustb_amount: rfqData.ustb_amount,
+    usdtb_amount: rfqData.usdtb_amount,
   };
 }
 
@@ -74,17 +74,6 @@ export async function signOrder(
   });
 
   const account = privateKeyToAccount(privateKey as Hex);
-
-  const orderHash = await publicClient.readContract({
-    address: MINT_ADDRESS,
-    abi: USTB_MINTING_ABI,
-    functionName: "hashOrder",
-    args: [
-      {
-        ...order,
-      },
-    ],
-  });
 
   const signature = await walletClient.signTypedData({
     account,
@@ -156,7 +145,7 @@ export const UINT256_MAX = BigInt(2) ** BigInt(256) - BigInt(1);
 
 export async function submitOrder(order: OrderSending, signature: Signature) {
   const response = await fetch(
-    `${USTB_URL}order?signature=${signature.signature_bytes}`,
+    `${USDTB_URL}order?signature=${signature.signature_bytes}`,
     {
       method: "POST",
       headers: {

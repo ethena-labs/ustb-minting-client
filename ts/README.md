@@ -1,6 +1,6 @@
-# UStb TypeScript SDK
+# USDtb TypeScript SDK
 
-This SDK provides utilities for minting and redeeming UStb tokens.
+This SDK provides utilities for minting and redeeming USDtb tokens.
 
 ## Setup
 

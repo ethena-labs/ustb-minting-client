@@ -10,7 +10,7 @@ import {
   getAllowance,
   approve,
 } from "./mint_utils";
-import { USTB_MINTING_ABI } from "./minting_abi";
+import { USDTB_MINTING_ABI } from "./minting_abi";
 import { mainnet } from "viem/chains";
 import { parseScientificOrNonScientificToBigInt } from "./parse_number";
 import { MINT_ADDRESS } from "./constants";
@@ -37,7 +37,7 @@ async function main() {
       COLLATERAL_ASSET === "USDC" ? USDC_ADDRESS : BUIDL_ADDRESS;
 
     // Get RFQ
-    const pair = `${COLLATERAL_ASSET}/UStb`;
+    const pair = `${COLLATERAL_ASSET}/USDtb`;
     const rfqData = await getRfq(pair, "ALGO", SIDE, AMOUNT);
 
     console.log("RFQ", rfqData);
@@ -72,7 +72,7 @@ async function main() {
       nonce: BigInt(order.nonce),
       order_type: order.order_type === Side.MINT ? 0 : 1,
       expiry: BigInt(order.expiry),
-      ustb_amount: parseScientificOrNonScientificToBigInt(order.ustb_amount),
+      usdtb_amount: parseScientificOrNonScientificToBigInt(order.usdtb_amount),
       collateral_amount: parseScientificOrNonScientificToBigInt(
         order.collateral_amount
       ),
@@ -92,7 +92,7 @@ async function main() {
 
     const isValidSignature = await publicClient.readContract({
       address: MINT_ADDRESS,
-      abi: USTB_MINTING_ABI,
+      abi: USDTB_MINTING_ABI,
       functionName: "verifyOrder",
       args: [
         orderSigning,

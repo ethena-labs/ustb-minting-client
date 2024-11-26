@@ -1,4 +1,4 @@
-export const USTB_MINTING_ABI = [
+export const USDTB_MINTING_ABI = [
   {
     inputs: [
       { internalType: "address[]", name: "_assets", type: "address[]" },

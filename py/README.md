@@ -1,6 +1,6 @@
 # API Examples
 
-Example scripts interacting with UStb Minting API
+Example scripts interacting with USDtb Minting API
 
 # Quick start for minting
 
@@ -33,5 +33,5 @@ $ source venv/bin/activate
 ## Run mint
 
 ```
-(venv) $ python3 ./py/ustb_mint_script.py
+(venv) $ python3 ./py/usdtb_mint_script.py
 ```

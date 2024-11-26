@@ -26,7 +26,7 @@ export interface OrderSending extends OrderBase {
   nonce: number;
   expiry: number;
   order_type: Side;
-  ustb_amount: string;
+  usdtb_amount: string;
   collateral_amount: string;
 }
 
@@ -34,13 +34,13 @@ export interface OrderSigning extends OrderBase {
   nonce: bigint;
   expiry: bigint;
   order_type: number;
-  ustb_amount: bigint;
+  usdtb_amount: bigint;
   collateral_amount: bigint;
 }
 
 export interface Rfq {
   collateral_asset: Address;
-  ustb_amount: string;
+  usdtb_amount: string;
   gas: number;
   pair: string;
   collateral_amount: string;
